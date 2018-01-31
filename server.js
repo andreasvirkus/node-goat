@@ -16,6 +16,8 @@ var marked = require("marked");
 var app = express(); // Web framework to handle routing requests
 var routes = require("./app/routes");
 var config = require("./config/config"); // Application config properties
+
+const cookieExpirationTime = 31000;
 /*
 // Fix for A6-Sensitive Data Exposure
 // Load keys for establishing secure HTTPS connection
@@ -85,7 +87,12 @@ MongoClient.connect(config.db, function(err, db) {
         secret: config.cookieSecret,
         // Both mandatory in Express v4
         saveUninitialized: true,
-        resave: true
+        resave: true,
+        cookie: {
+          httpOnly: true,
+          // secure: true,
+          maxAge: cookieExpirationTime,
+        }
         /*
         // Fix for A5 - Security MisConfig
         // Use generic cookie name
